@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sports Business Digest</title>
+  <style>
+    :root {
+      --bg: #0c0c0e;
+      --surface: #141417;
+      --surface2: #1c1c21;
+      --border: #2a2a32;
+      --text: #f0f0f5;
+      --muted: #8888a0;
+      --accent: #00e5a0;
+      --accent2: #7c6af5;
+      --red: #ff4d6d;
+      --yellow: #ffca28;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(12,12,14,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      height: 56px;
+    }
+    .nav-logo {
+      font-weight: 800;
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+      color: var(--accent);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .nav-pills {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .nav-pill {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.3rem 0.85rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .nav-pill:hover, .nav-pill.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(0,229,160,0.08);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #0f1a2e 0%, #1a0f2e 50%, #0f1a1a 100%);
+      padding: 4rem 2rem 3.5rem;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 60% at 70% 50%, rgba(0,229,160,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      max-width: 900px;
+      position: relative;
+    }
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(0,229,160,0.12);
+      border: 1px solid rgba(0,229,160,0.3);
+      border-radius: 999px;
+      padding: 0.3rem 0.85rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+    .hero-headline {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+      max-width: 720px;
+    }
+    .hero-headline span { color: var(--accent); }
+    .hero-summary {
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 620px;
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+    .hero-bullets {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      margin-bottom: 2.5rem;
+    }
+    .hero-bullet {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-size: 0.9rem;
+      color: #c8c8d8;
+    }
+    .hero-bullet::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+      margin-top: 0.5rem;
+    }
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--accent);
+      color: #0a0a0a;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s;
+      letter-spacing: 0.01em;
+    }
+    .hero-cta:hover { background: #00ffb2; transform: translateY(-1px); }
+    .hero-label {
+      position: absolute;
+      top: 1.5rem;
+      right: 2rem;
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+    }
+
+    /* ── SECTIONS ── */
+    .sections-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+    }
+    .section-block {
+      margin-bottom: 3.5rem;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-icon { font-size: 1.3rem; }
+    .section-title {
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .section-count {
+      margin-left: auto;
+      background: var(--surface2);
+      border-radius: 999px;
+      padding: 0.15rem 0.6rem;
+      font-size: 0.7rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    /* ── CARDS ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      cursor: pointer;
+      transition: all 0.18s;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent 60%, rgba(124,106,245,0.04));
+      pointer-events: none;
+    }
+    .card:hover {
+      border-color: var(--accent2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(124,106,245,0.15);
+    }
+    .card-org {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--accent2);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.5rem;
+    }
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      line-height: 1.35;
+      margin-bottom: 0.65rem;
+      color: var(--text);
+    }
+    .card-preview {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.6;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .card-arrow {
+      position: absolute;
+      bottom: 1.1rem;
+      right: 1.2rem;
+      font-size: 0.75rem;
+      color: var(--border);
+      transition: color 0.15s;
+    }
+    .card:hover .card-arrow { color: var(--accent2); }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      max-width: 620px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 2rem;
+      position: relative;
+      transform: translateY(16px);
+      transition: transform 0.2s;
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--muted);
+      font-size: 1rem;
+      transition: all 0.15s;
+    }
+    .modal-close:hover { color: var(--text); border-color: var(--text); }
+    .modal-category {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.75rem;
+    }
+    .modal-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+    .modal-bullets {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .modal-bullet {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.7rem;
+      font-size: 0.9rem;
+      color: #c0c0d0;
+      line-height: 1.65;
+      padding-left: 0.1rem;
+    }
+    .modal-bullet::before {
+      content: '→';
+      color: var(--accent);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 0.05rem;
+    }
+    .modal-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 1.5rem 0;
+    }
+    .modal-ask-prompt {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+    }
+    .modal-ask-label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .modal-ask-text {
+      font-size: 0.85rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .modal-ask-text em {
+      color: var(--accent2);
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+    footer strong { color: var(--accent); }
+
+    @media (max-width: 600px) {
+      nav { gap: 1rem; padding: 0 1rem; }
+      .hero { padding: 2.5rem 1.25rem 2.5rem; }
+      .sections-wrapper { padding: 2rem 1.25rem 4rem; }
+      .cards-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Sports Digest</div>
+  <div class="nav-pills">
+    <button class="nav-pill active" onclick="filterSection('all')">All</button>
+    <button class="nav-pill" onclick="filterSection('digital')">🌐 Digital</button>
+    <button class="nav-pill" onclick="filterSection('ai')">🤖 AI & Tech</button>
+    <button class="nav-pill" onclick="filterSection('gaming')">🎮 Gaming</button>
+    <button class="nav-pill" onclick="filterSection('betting')">🎰 Betting</button>
+    <button class="nav-pill" onclick="filterSection('fan')">📈 Fan Engagement</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" onclick="openModal(heroStory)">
+  <span class="hero-label">Top Story</span>
+  <div class="hero-inner">
+    <div class="hero-tag">🌐 Digital Media &amp; Broadcast</div>
+    <h1 class="hero-headline">FIFA relaunches <span>FIFA+</span> as the Global Home of Football for 2026</h1>
+    <p class="hero-summary">FIFA and DAZN are positioning FIFA+ as a major D2C streaming force ahead of the 2026 World Cup — offering live football from 100+ leagues, multilingual news, documentaries, and original series on a single platform.</p>
+    <div class="hero-bullets">
+      <div class="hero-bullet">Live games and on-demand content from over 100 leagues and teams worldwide</div>
+      <div class="hero-bullet">Multi-lingual global news, documentaries, interviews and original series</div>
+      <div class="hero-bullet">Timed to maximise reach ahead of the 2026 World Cup</div>
+    </div>
+    <button class="hero-cta">Read more &rarr;</button>
+  </div>
+</section>
+
+<!-- SECTIONS -->
+<div class="sections-wrapper" id="sectionsWrapper">
+
+  <!-- Digital Media -->
+  <div class="section-block" data-section="digital">
+    <div class="section-header">
+      <span class="section-icon">🌐</span>
+      <span class="section-title">Digital Media &amp; Broadcast</span>
+      <span class="section-count" id="count-digital"></span>
+    </div>
+    <div class="cards-grid" id="grid-digital"></div>
+  </div>
+
+  <!-- AI & Technology -->
+  <div class="section-block" data-section="ai">
+    <div class="section-header">
+      <span class="section-icon">🤖</span>
+      <span class="section-title">AI &amp; Technology</span>
+      <span class="section-count" id="count-ai"></span>
+    </div>
+    <div class="cards-grid" id="grid-ai"></div>
+  </div>
+
+  <!-- Gaming -->
+  <div class="section-block" data-section="gaming">
+    <div class="section-header">
+      <span class="section-icon">🎮</span>
+      <span class="section-title">Gaming</span>
+      <span class="section-count" id="count-gaming"></span>
+    </div>
+    <div class="cards-grid" id="grid-gaming"></div>
+  </div>
+
+  <!-- Betting -->
+  <div class="section-block" data-section="betting">
+    <div class="section-header">
+      <span class="section-icon">🎰</span>
+      <span class="section-title">Betting</span>
+      <span class="section-count" id="count-betting"></span>
+    </div>
+    <div class="cards-grid" id="grid-betting"></div>
+  </div>
+
+  <!-- Fan Engagement -->
+  <div class="section-block" data-section="fan">
+    <div class="section-header">
+      <span class="section-icon">📈</span>
+      <span class="section-title">Fan Engagement</span>
+      <span class="section-count" id="count-fan"></span>
+    </div>
+    <div class="cards-grid" id="grid-fan"></div>
+  </div>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOverlay(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-category" id="modalCategory"></div>
+    <div class="modal-title" id="modalTitle"></div>
+    <div class="modal-bullets" id="modalBullets"></div>
+    <div class="modal-divider"></div>
+    <div class="modal-ask-prompt">
+      <div class="modal-ask-label">Dig deeper with Claude</div>
+      <div class="modal-ask-text" id="modalAskText"></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Powered by the <strong>Sports Business Newsletter</strong> skill &nbsp;·&nbsp; Built with Claude Code
+</footer>
+
+<script>
+  // ── DATA ──
+  const heroStory = {
+    category: '🌐 Digital Media & Broadcast',
+    title: 'FIFA & DAZN: FIFA+ relaunches as the Global Home of Football',
+    bullets: [
+      'Re-launch of FIFA+ for 2026 as a D2C streaming service — the \'Global Home of Football\'',
+      'Live games and on-demand content from over 100 leagues and teams',
+      'Multi-lingual global news, documentaries, interviews and original series',
+      'Timed to maximise audience reach heading into the 2026 World Cup cycle'
+    ],
+    ask: 'Try asking: <em>"What does the FIFA+ relaunch mean for existing broadcast rights holders like beIN Sports and Sky?"</em> or <em>"How does this compare to the Amazon Prime / DAZN streaming playbook?"</em>'
+  };
+
+  const stories = {
+    digital: [
+      {
+        org: 'ATP Tour & Spotify',
+        title: 'Global Content Collaboration targeting fan engagement on Spotify',
+        preview: 'Sports video consumption up 250% on Spotify since early 2025, with episodic BTS content from the ATP Finals.',
+        bullets: [
+          'Focusing on fan engagement and on-platform programming',
+          'Episodic content including a BTS documentary on the ATP Finals in 2025',
+          'Sports video consumption up 250% on Spotify; overall video up 80% since start of 2025'
+        ],
+        ask: 'Try: <em>"What does this mean for podcast-first platforms competing with YouTube for sports audiences?"</em>'
+      },
+      {
+        org: 'NBA',
+        title: 'NBA Tap to Watch: One-click access to live games across all platforms',
+        preview: 'New initiative integrating Google, Meta, X and others so fans can find every national game in seconds.',
+        bullets: [
+          'Allows fans to easily access live games across all third-party platforms',
+          'National games on ABC/ESPN, NBC/Peacock and Prime Video all unified',
+          'NBA partners Google, Meta, X integrated alongside NBA App and NBA.com',
+          'Goal: make live game access frictionless and reduce drop-off'
+        ],
+        ask: 'Try: <em>"How does NBA Tap to Watch affect the league\'s direct relationship with fans vs. platform algorithms?"</em>'
+      },
+      {
+        org: 'Under Armour',
+        title: 'Lab96 Studios: athlete-first content in episodic and cinematic formats',
+        preview: 'A new content studio meeting athletes where they engage, with evergreen entertainment-driven storytelling.',
+        bullets: [
+          'Highlighting athletes in episodic and cinematic ways',
+          'Focus on evergreen, entertainment-driven content to engage athletes and fans',
+          'Designed to compete with Nike\'s documentary and lifestyle content output'
+        ],
+        ask: 'Try: <em>"How does Lab96 Studios fit Under Armour\'s broader brand turnaround strategy?"</em>'
+      },
+      {
+        org: 'EA Sports & The Athletic',
+        title: 'Strategic partnership brings editorial and video content into the EA Sports App',
+        preview: 'The Athletic\'s editorial will sit inside the EA Sports App, with branding in FC26 career mode and in-app rewards.',
+        bullets: [
+          'Editorial and short-form video from The Athletic published in the EA Sports App',
+          'The Athletic branding across FC26 career mode',
+          'Fans unlock in-app rewards as they engage with content'
+        ],
+        ask: 'Try: <em>"What does this deal signal about the convergence of sports gaming and sports journalism?"</em>'
+      },
+      {
+        org: 'Amelia Dimoldenberg & F1',
+        title: 'Passenger Princess YouTube series hits 5.2M views across four F1 driver episodes',
+        preview: 'Part of F1\'s strategy to reach fans outside race weekends by leaning on popular culture.',
+        bullets: [
+          'YouTube series – Passenger Princess – featuring four F1 drivers',
+          'Over 5.2M views across the four videos',
+          'Part of F1\'s original content strategy to reach audiences outside race weekends',
+          'Leans on popular culture crossover to attract new, younger fans'
+        ],
+        ask: 'Try: <em>"How does F1\'s pop-culture content strategy compare to what the NBA did in the 2010s?"</em>'
+      },
+      {
+        org: 'National League, DAZN & TikTok',
+        title: 'National League football broadcast live on TikTok — no subscription required',
+        preview: 'Southend v Carlisle shown free on TikTok, with a workshop for all 72 clubs to maximise the platform.',
+        bullets: [
+          'No subscription required — Southend v Carlisle live on TikTok (Nov 8th)',
+          'DAZN and TikTok hosting a workshop for all 72 National League clubs',
+          'Clubs coached on how to maximise TikTok reach and content opportunities'
+        ],
+        ask: 'Try: <em>"What are the monetisation implications of free live sport on social platforms for lower-league clubs?"</em>'
+      },
+      {
+        org: 'DAZN',
+        title: 'DAZN now available as an Amazon Prime channel in the UK & US',
+        preview: 'Expanded boxing, football and sport available to Prime subscribers without leaving the Amazon ecosystem.',
+        bullets: [
+          'DAZN accessible as an Amazon Prime channel in UK and US',
+          'Offering more boxing bouts, football and a host of other sports',
+          'Further blurs the line between SVOD aggregation and standalone sports streaming'
+        ],
+        ask: 'Try: <em>"Does bundling on Amazon weaken DAZN\'s D2C brand or is it the right distribution play?"</em>'
+      },
+      {
+        org: 'Premiership Rugby & Whisper',
+        title: 'Revamped content strategy to engage 18–34 year olds',
+        preview: 'Partnership with production company Whisper to overhaul how Premiership Rugby reaches younger audiences.',
+        bullets: [
+          'Partnership to deliver a revamped content strategy',
+          'Focusing on engaging more 18–34 year olds',
+          'Whisper bring production and digital-first expertise'
+        ],
+        ask: 'Try: <em>"What content formats are proving most effective for reaching 18–34 sports fans in 2025?"</em>'
+      },
+      {
+        org: 'NFL & Prime Video',
+        title: 'Black Friday NFL game broadcast globally in Spanish, French and Portuguese',
+        preview: 'Eagles v Bears presented in 240+ countries with multilingual commentary options.',
+        bullets: [
+          'Black Friday game between the Eagles and the Bears presented globally across 240+ countries',
+          'Language options of Spanish, French and Portuguese alongside English',
+          'Part of the NFL\'s international growth push leveraging Amazon\'s global infrastructure'
+        ],
+        ask: 'Try: <em>"What does the NFL\'s multilingual streaming strategy tell us about their international fan base ambitions?"</em>'
+      },
+      {
+        org: 'Netflix',
+        title: 'Netflix reports best-ever Q3 in ad sales, owning 8.6% of total US viewing time',
+        preview: 'Netflix focuses sport strategy on \'Tentpole events\' — Alvarez v Crawford and Women\'s World Cup 2027.',
+        bullets: [
+          'Best ever Q3 in ad sales for Netflix',
+          'Netflix accounts for 8.6% of total viewing time in the US',
+          'Sport strategy focused on owning \'Tentpole events\': Alvarez v Crawford (Sep 2025), Women\'s World Cup 2027'
+        ],
+        ask: 'Try: <em>"What\'s Netflix\'s long-term sports rights strategy and how does it differ from Amazon\'s?"</em>'
+      },
+      {
+        org: 'TikTok US',
+        title: 'Potential TikTok US split could reshape rights holders\' content strategies',
+        preview: 'A US-only split app could mean separate global vs. domestic distribution playbooks for sports organisations.',
+        bullets: [
+          'Potential split of TikTok\'s US app under consideration',
+          'Would reshape how rights holders and teams deliver content strategy inside the US vs. globally',
+          'Separate algorithmic feeds could mean separate editorial priorities for the same content'
+        ],
+        ask: 'Try: <em>"How should a sports rights holder like the Premier League prepare for a fragmented TikTok landscape?"</em>'
+      },
+      {
+        org: 'Ferrero Group',
+        title: '$100M marketing push across sport — Kinder Super Bowl ad and 2026 World Cup focus',
+        preview: 'North America marketing offensive targeting the biggest sporting moments for Ferrero\'s confectionary brands.',
+        bullets: [
+          'Ferrero Group North America planning to spend $100M marketing across sport',
+          'Kinder Super Bowl ad confirmed',
+          'Focus around the 2026 World Cup as a flagship activation moment'
+        ],
+        ask: 'Try: <em>"What does Ferrero\'s sports marketing spend signal about FMCG brands and live sport sponsorship trends?"</em>'
+      }
+    ],
+
+    ai: [
+      {
+        org: 'Liverpool FC',
+        title: 'AI-powered archive tagging drives 20M engagements on a single Indonesia post',
+        preview: 'Liverpool using AI to scan, tag and categorise archive footage, creating hyper-localised content at scale.',
+        bullets: [
+          'Using AI to scan, tag and categorise archive footage',
+          'Content creation tailored to local audiences',
+          'A recent post targeting Indonesia generated 20M engagements',
+          'Sets a template for global clubs with large diaspora fan bases'
+        ],
+        ask: 'Try: <em>"Which other Premier League clubs are likely to adopt similar AI archive strategies, and what\'s the risk of content homogenisation?"</em>'
+      },
+      {
+        org: 'Cricket IQ & IBM',
+        title: 'Watsonx.AI delivers real-time match strategy insights for Indian state cricket',
+        preview: 'Player fitness, match context, live data and environmental conditions fed to coaches for in-game decisions.',
+        bullets: [
+          'Leading Indian state cricket association working alongside IBM Watsonx.AI',
+          'Insights into player fitness, match context, live data and environmental conditions',
+          'Allows coaches to make in-the-moment changes to match strategy'
+        ],
+        ask: 'Try: <em>"How does real-time AI coaching assistance intersect with cricket\'s regulations around in-game communication?"</em>'
+      },
+      {
+        org: 'USA Bobsled / Skeleton',
+        title: 'Snowflake becomes Official Data Cloud Provider for USA Bobsled/Skeleton',
+        preview: 'Data partnership supporting performance analytics for one of winter sport\'s most data-rich disciplines.',
+        bullets: [
+          'Snowflake to become the team\'s Official Data Cloud Provider',
+          'Supports performance analysis and athlete data management',
+          'Part of Snowflake\'s growing sports data portfolio'
+        ],
+        ask: 'Try: <em>"What types of performance data are most valuable in bobsled and skeleton, and how might Snowflake surface them?"</em>'
+      },
+      {
+        org: 'San Francisco 49ers & PwC',
+        title: 'PwC enlisted as Digital Consulting Partner to remove stadium friction and revamp team app',
+        preview: 'Focus on improving stadium access pain-points and delivering a next-generation fan app experience.',
+        bullets: [
+          'PwC engaged as \'Digital Consulting Partner\'',
+          'Focus on removing pain-points around stadium access',
+          'Revamping the current 49ers team app experience'
+        ],
+        ask: 'Try: <em>"What are the biggest stadium technology pain-points in 2025 and how is the industry solving them?"</em>'
+      },
+      {
+        org: 'IBM & Agassi Sports Entertainment',
+        title: 'Digital-first platform to advance racquet sports through AI training and premium content',
+        preview: 'AI training videos, premium content and community experiences with Agassi and others.',
+        bullets: [
+          'Digital-first platform with the aim of advancing racquet sports through AI',
+          'AI training videos, premium content and community experiences',
+          'Features Andre Agassi and other racquet sport icons'
+        ],
+        ask: 'Try: <em>"How does this platform compare to other athlete-led digital ventures, and what\'s the business model?"</em>'
+      }
+    ],
+
+    gaming: [
+      {
+        org: 'IOC & Saudi Arabia',
+        title: 'Olympic Esports Games partnership ends — Riyadh 2027 event in doubt',
+        preview: 'The two sides have ended their deal, putting the future of the Olympic Esports Games format in question.',
+        bullets: [
+          'IOC and Saudi Arabia have ended their partnership to host the Olympic Esports Games in Riyadh',
+          'Originally set for 2025, already pushed back to 2027',
+          'Raises questions about the future shape and governance of Olympic esports'
+        ],
+        ask: 'Try: <em>"What does the collapse of the IOC-Saudi esports deal mean for the legitimisation of competitive gaming?"</em>'
+      },
+      {
+        org: 'Sense Arena & NHL',
+        title: 'VR training platform integrates likenesses of 600+ NHL players',
+        preview: 'Enhanced training simulation alongside an existing 3v3 game format, blurring training and gaming.',
+        bullets: [
+          'Sense Arena VR Training platform integrates player likenesses of 600+ NHL athletes',
+          'Enhances the training offering alongside the existing 3v3 game format',
+          'Bridges the gap between professional training tools and consumer gaming'
+        ],
+        ask: 'Try: <em>"What are the IP and likeness rights implications for player unions in VR training partnerships like this?"</em>'
+      },
+      {
+        org: 'PGA Tour 2K25',
+        title: 'Cross-game partnership with Borderlands brings new courses, modes and collectibles',
+        preview: 'Golf gaming meets looter-shooter IP in a crossover designed to bring new audiences to PGA Tour 2K25.',
+        bullets: [
+          'Cross-game partnership with Borderlands',
+          'New courses, game modes and collectibles brought into PGA Tour 2K25',
+          'Strategy to introduce PGA Tour brand to Borderlands\' large fanbase'
+        ],
+        ask: 'Try: <em>"How effective are non-sports IP crossovers in driving new user acquisition for sports games?"</em>'
+      },
+      {
+        org: 'Orlando Pirates & Adidas',
+        title: 'Orlando Pirates enter the Roblox Universe — fans can try on kits and connect globally',
+        preview: 'First African club to build a meaningful Roblox presence, leveraging Adidas partnership for virtual merchandise.',
+        bullets: [
+          'Orlando Pirates have entered the world of Roblox',
+          'Fans can try on kits virtually and connect with other fans',
+          'Adidas-backed activation targeting younger, digitally-native supporters'
+        ],
+        ask: 'Try: <em>"How are African football clubs using gaming platforms to grow their global audience, and who\'s leading the way?"</em>'
+      },
+      {
+        org: 'AFL',
+        title: 'AFL launches on Roblox to engage younger fans with obstacle courses and UGC rewards',
+        preview: 'Fans earn UGC content and AFL jerseys by competing in mini-games — a bet on the next generation of fans.',
+        bullets: [
+          'AFL launches on Roblox with a drive to engage younger audiences',
+          'Fans compete on obstacle courses and mini-games',
+          'Earn UGC content and AFL jerseys as in-game rewards'
+        ],
+        ask: 'Try: <em>"What metrics should the AFL use to evaluate whether their Roblox activation is converting casual players into real fans?"</em>'
+      },
+      {
+        org: 'EA Sports & NFL',
+        title: 'EA Sports extends Madden NFL licensing deal through to 2030',
+        preview: 'Continued exclusivity for the Madden franchise, cementing EA\'s position as the NFL\'s game partner.',
+        bullets: [
+          'EA Sports and NFL agree to extend licensing deal for Madden through to 2030',
+          'Maintains EA\'s exclusive NFL video game licence',
+          'Provides long-term stability for the Madden franchise amid growing competition from indie football titles'
+        ],
+        ask: 'Try: <em>"Does the Madden exclusivity deal benefit the NFL long-term, or does it limit the growth of NFL gaming content?"</em>'
+      }
+    ],
+
+    betting: [
+      {
+        org: 'NBA',
+        title: 'Sportsbooks spend $50M+ on NBA in-game ads during the 2024/25 season',
+        preview: 'A landmark spend figure signalling how central live sport is to sportsbook customer acquisition.',
+        bullets: [
+          'Sportsbooks spent over $50M on ads during NBA games in the 2024/25 season',
+          'Reflects the NBA\'s position as a premium betting inventory vehicle',
+          'Raises ongoing debate about saturation and fan sentiment toward betting ads in sport'
+        ],
+        ask: 'Try: <em>"At what point does betting advertising saturation start to harm the fan experience, and are we there yet?"</em>'
+      },
+      {
+        org: 'Breeders Cup',
+        title: 'Breeders Cup betting handle rises year-on-year on both Friday and Saturday',
+        preview: 'A positive sign for horse racing\'s betting economy at its flagship annual event.',
+        bullets: [
+          'Betting handle sees YoY increases on both Friday and Saturday',
+          'Indicates sustained health in premium horse racing wagering',
+          'Comes amid broader market consolidation among US sportsbooks'
+        ],
+        ask: 'Try: <em>"What is driving the resilience of horse racing betting handles compared to other sports in the US?"</em>'
+      },
+      {
+        org: 'Dream11',
+        title: 'Dream11 launches in 11 new markets including UK and US despite India real-money ban',
+        preview: 'The Indian fantasy sports giant targets US fantasy market share and UK audience growth.',
+        bullets: [
+          'Dream11 expanding into 11 new markets, including the UK and US',
+          'Notable given a ban on real-money gambling in India for the platform',
+          'Aiming to capture fantasy sports market share in the US',
+          'Breaking into the competitive UK market with established local operators'
+        ],
+        ask: 'Try: <em>"How does Dream11\'s fantasy sports model differ legally from traditional sports betting, and does that give them a regulatory advantage?"</em>'
+      },
+      {
+        org: 'DraftKings & ESPN',
+        title: 'DraftKings signs exclusive deal with ESPN as Official Sportsbook after Penn exit',
+        preview: 'ESPN Bet gets a new exclusive partner following Penn Entertainment\'s departure from the deal.',
+        bullets: [
+          'ESPN announces exclusive deal with DraftKings as Official Sportsbook and Odds provider',
+          'Penn Entertainment exited their ESPN deal, creating the vacancy',
+          'DraftKings gains premium media exposure across ESPN\'s enormous sports audience',
+          'Significant shift in the US sports betting partnership landscape'
+        ],
+        ask: 'Try: <em>"What went wrong with the Penn/ESPN Bet partnership, and what does DraftKings need to do differently to make this work?"</em>'
+      }
+    ],
+
+    fan: [
+      {
+        org: 'Atlanta Hawks & JP Morgan Chase',
+        title: 'JPMC and the Hawks offer clients courtside access and on-court pregame experiences',
+        preview: 'Premium experiential activations bringing financial services clients closer to the game.',
+        bullets: [
+          'JPMC and the Hawks have teamed up for premium client entertainment',
+          'Offerings include courtside access, postgame free-throws and pregame on-court experiences',
+          'Positions the Hawks arena as an enterprise client entertainment venue'
+        ],
+        ask: 'Try: <em>"How are NBA teams monetising premium courtside experiences beyond traditional hospitality, and what\'s the ceiling for this market?"</em>'
+      },
+      {
+        org: 'MLB',
+        title: 'MLB Players Union Japan pop-up leans on Japanese player popularity during post-season',
+        preview: 'Limited edition merch pop-up in Japan during the post-season capitalises on Shohei Ohtani and co.',
+        bullets: [
+          'MLB Players Union launched a pop-up shop in Japan during the post-season',
+          'Featured limited edition merch',
+          'Directly tied to the success and popularity of Japanese players in the league',
+          'Strong localisation play capitalising on a culturally resonant moment'
+        ],
+        ask: 'Try: <em>"How much of MLB\'s Japan revenue is driven by individual player fame vs. the league brand itself?"</em>'
+      },
+      {
+        org: 'Aston Martin & Toy Story',
+        title: 'Aston Martin partners with Toy Story to bring Buzz Lightyear to F1',
+        preview: 'Fan engagement through merchandise crossover — helmets and branded gear targeting family audiences.',
+        bullets: [
+          'Partnership with Toy Story focusing on engaging new fans',
+          'Buzz Lightyear helmets and themed merchandise produced',
+          'Designed to attract family audiences and younger F1 fans to the Aston Martin brand'
+        ],
+        ask: 'Try: <em>"How do F1 team IP crossover partnerships compare in ROI to traditional sponsor logo placements?"</em>'
+      },
+      {
+        org: 'New York Marathon',
+        title: 'Seven new partners activate at New York Marathon 2025 with DOOH and runner engagement',
+        preview: 'Expanded activation along the course with digital out-of-home ads and build-up engagement opportunities.',
+        bullets: [
+          '2025 saw seven new partners activating across the course',
+          'DOOH ads and engagement opportunities for runners and fans throughout build-up and race day',
+          'Marathon continues to grow as a premium brand activation platform beyond traditional sports'
+        ],
+        ask: 'Try: <em>"What makes mass participation events like marathons uniquely valuable for sponsors compared to spectator sports?"</em>'
+      },
+      {
+        org: 'Vegas Golden Knights',
+        title: 'New native app with predictions, stats, in-app payments and gamification prizes',
+        preview: 'Mobile wallet and gamification layers on top of a full-service team app targeting the Vegas fan base.',
+        bullets: [
+          'Native app: tickets, news, team content, venue maps and stats in one place',
+          'In-app predictions feature engages fans throughout games',
+          'Mobile wallet enabling in-app payments',
+          'Gamification prizes tied to fan engagement behaviours'
+        ],
+        ask: 'Try: <em>"What are the best examples of sports team apps that have cracked genuine daily engagement, and what do they have in common?"</em>'
+      },
+      {
+        org: 'AC Milan & Socios.com',
+        title: 'AC Milan extend partnership with Socios.com for fan tokens and reward access',
+        preview: 'Blockchain-based fan engagement gives Milan supporters access to exclusive content and tokenised rewards.',
+        bullets: [
+          'AC Milan extend partnership with the blockchain-based fan engagement platform Socios.com',
+          'Fans access fan tokens enabling new content and exclusive experiences',
+          'Reward mechanics tied to fan token holdings',
+          'Part of AC Milan\'s broader digital fan engagement strategy'
+        ],
+        ask: 'Try: <em>"Has the fan token model delivered on its promise for football clubs, or has the crypto downturn undermined the value exchange?"</em>'
+      }
+    ]
+  };
+
+  // ── RENDER CARDS ──
+  function renderCards() {
+    ['digital','ai','gaming','betting','fan'].forEach(key => {
+      const grid = document.getElementById('grid-' + key);
+      const count = document.getElementById('count-' + key);
+      const list = stories[key];
+      count.textContent = list.length + ' stories';
+      grid.innerHTML = list.map((s, i) => `
+        <div class="card" onclick='openModal(${JSON.stringify(s).replace(/'/g,"&#39;")})'>
+          <div class="card-org">${s.org}</div>
+          <div class="card-title">${s.title}</div>
+          <div class="card-preview">${s.preview}</div>
+          <span class="card-arrow">↗</span>
+        </div>
+      `).join('');
+    });
+  }
+
+  // ── MODAL ──
+  function openModal(story) {
+    document.getElementById('modalCategory').textContent = story.category || '';
+    document.getElementById('modalTitle').textContent = story.title;
+    document.getElementById('modalBullets').innerHTML = story.bullets
+      .map(b => `<div class="modal-bullet">${b}</div>`).join('');
+    document.getElementById('modalAskText').innerHTML = story.ask || '';
+    document.getElementById('modalOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function closeModalOnOverlay(e) {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  // ── FILTER ──
+  function filterSection(key) {
+    document.querySelectorAll('.nav-pill').forEach(p => p.classList.remove('active'));
+    event.target.classList.add('active');
+
+    document.querySelectorAll('.section-block').forEach(block => {
+      if (key === 'all' || block.dataset.section === key) {
+        block.style.display = '';
+      } else {
+        block.style.display = 'none';
+      }
+    });
+  }
+
+  renderCards();
+</script>
+</body>
+</html>

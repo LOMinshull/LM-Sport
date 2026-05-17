@@ -974,3 +974,10 @@ cd ~/sports-newsletter-site
 git add index.html stories.js
 git commit -m "add archive tab and split stories by date"
 git push
+cd ~/sports-newsletter-site
+git init
+git remote add origin https://github.com/lominshull/LM-Sport.git
+git pull origin main --allow-unrelated-histories
+git add index.html stories.js
+git commit -m "add archive tab and stories.js"
+git push -u origin main
